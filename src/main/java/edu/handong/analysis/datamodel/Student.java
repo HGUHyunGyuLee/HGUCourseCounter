@@ -2,6 +2,7 @@ package edu.handong.analysis.datamodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Student {
 	private String studentid;
@@ -37,39 +38,52 @@ public class Student {
 					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
 				}			
 			previousYearTaken = yearTaken;
-			previousSemesterTaken = semesterTaken;
-			
-				
+			previousSemesterTaken = semesterTaken;				
 		}
 
 		return semestersByYearAndSemester;
 	}
 	public int getNumCourseInNthSementer(int semester) {
-		
-		int[] countSemester = new int[253];
+		HashMap<String,Integer> semestersByYears = this.getSemestersByYearAndSemester();
+		int i = 0;
+		int count=0;
+		for(int key:semestersByYears.values()) {
+			if(key == semester) {
+				//System.out.println(this.getKey(semestersByYears, key));
+				String targetKey = this.getKey(semestersByYears, key);
+					for(i=0;i<coursesTaken.size();i++) {
+						int yearTaken = coursesTaken.get(i).getYearTaken();
+						int semesterTaken = coursesTaken.get(i).getSemesterCourseTaken();
+						String target = String.valueOf(yearTaken)+ "-" +String.valueOf(semesterTaken);
+						if(target.equals(targetKey)) count++;
+					}
+			}
+		}
+
+	/*	int[] countSemester = new int[253];
 		int position=1;
-		
+	//	System.out.println(this.getCourse().get(9).getSemesterCourseTaken());
 		//System.out.println(this.getCourse().size());
 	for(int i=0;i<this.getCourse().size();) {
 		
 		int currentSemester =1;
 		int previousSemester =1;
 		int temp = 1;
-		
 		while(temp == currentSemester){		
-			countSemester[position]++;
+			(countSemester[position])++;
 			currentSemester = this.getCourse().get(i++).getSemesterCourseTaken();
-		//	System.out.println(currentSemester);
+	//		System.out.println(currentSemester);
 			temp = previousSemester;
-			previousSemester = currentSemester;			
-			i++;
+			previousSemester = currentSemester;	
+			
+		
 			if(i==this.getCourse().size()) break;
 		}
 		position++;
 			
-	}
+	}*/
 	
-		return countSemester[semester];
+		return count;
 	}
 	public ArrayList<Course> getCourse() {
 		return coursesTaken;
@@ -81,4 +95,13 @@ public class Student {
 		
 		return studentid;
 	}
+	public <K, V> K getKey(Map<K, V> map, V value) {
+		for (Map.Entry<K, V> entry : map.entrySet()) {
+			if (value.equals(entry.getValue())) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
 }

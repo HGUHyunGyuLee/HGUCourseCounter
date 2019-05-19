@@ -48,14 +48,14 @@ public class HGUCoursePatternAnalyzer {
 		
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
+		
 				
 			// TODO Auto-generated catch block
-		//System.out.println(sortedStudents.get("1").getSemestersByYearAndSemester().get("2007-2"));
+		
 
 		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
 		
-		//System.out.println(linesToBeSaved.get(14));
-		System.out.println(sortedStudents.get("1").getNumCourseInNthSementer(1));
+	
 		
 		// Generate result lines to be saved.
 	
@@ -98,15 +98,13 @@ public class HGUCoursePatternAnalyzer {
 			
 		HashMap<String,Student> loadedStudent = new HashMap<String,Student>();
 		int i=1;
-		while(i<253) {
+		while(i<=253) {
 			loadedStudent.put(String.valueOf(i),loadedStudentInstance[i]);
 			i++;
 		}
 		
 		return loadedStudent;
-	/*	for(String line:lines)
-			loadedStudent.put(line.)*/
-	//	loadedStudent.put(lines.get(index));
+
 		// TODO: Implement this method		
 		 // do not forget to return a proper variable.
 	}
@@ -126,7 +124,8 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		ArrayList<String> linestobesaved = new ArrayList<String>(); // to return;
-		for(int i=1;i<253;i++) {
+		
+		for(int i=1;i<=253;i++) {
 			ArrayList<Course> lastCourse = sortedStudents.get(String.valueOf(i)).getCourse();
 			String lastElement = String.valueOf(lastCourse.size()-1);
 			int lastYear = lastCourse.get(Integer.parseInt(lastElement)).getYearTaken();
@@ -135,10 +134,11 @@ public class HGUCoursePatternAnalyzer {
 			String numOfCourseTaken = String.valueOf(sortedStudents.get(String.valueOf(i)).getSemestersByYearAndSemester().get(keyForHashTag));
 			
 			for(int j=1;j<=Integer.parseInt(numOfCourseTaken);j++) {
-				linestobesaved.add(i + "," + numOfCourseTaken + "," + String.valueOf(j));
+				int coursePerSem = sortedStudents.get(String.valueOf(i)).getNumCourseInNthSementer(j);
+				linestobesaved.add(i + "," + numOfCourseTaken + "," + String.valueOf(j) + "," + coursePerSem);
 			}
 		}
-		
+		//
 		// TODO: Implement this method
 		
 		return linestobesaved; // do not forget to return a proper variable.
