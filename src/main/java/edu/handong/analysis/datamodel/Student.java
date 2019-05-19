@@ -7,94 +7,76 @@ import java.util.Map;
 public class Student {
 	private String studentid;
 	private ArrayList<Course> coursesTaken = new ArrayList<Course>();
-	private HashMap<String,Integer> semestersByYearAndSemester;
+	private HashMap<String, Integer> semestersByYearAndSemester;
 
-	
-	public Student(String studentId){	
-		
-		this.studentid =  studentId;
+	public Student(String studentId) {
+		this.studentid = studentId;
 	}
+
 	public void addCourse(Course newRecord) {
 		this.coursesTaken.add(newRecord);
-		
+
 	}
-	public HashMap<String,Integer> getSemestersByYearAndSemester()
-	{
-		HashMap<String,Integer> semestersByYearAndSemester = new HashMap<String,Integer>();
-			int previousYearTaken=-1;
-			int previousSemesterTaken=-1;
-			int count=1;
-			int j=0;
-		for(j=0;j<this.getCourse().size();j++) {
+
+	public HashMap<String, Integer> getSemestersByYearAndSemester() {
+		semestersByYearAndSemester = new HashMap<String, Integer>();
+		int previousYearTaken = -1;
+		int previousSemesterTaken = -1;
+		int count = 1;
+		int j = 0;
+		for (j = 0; j < this.getCourse().size(); j++) {
 			int yearTaken = coursesTaken.get(j).getYearTaken();
 			int semesterTaken = coursesTaken.get(j).getSemesterCourseTaken();
-			
-			if(j==0) {semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);}
-			else if(yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
-					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
-				
-				}
-			else if(yearTaken != previousYearTaken) {
-					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
-				}			
+
+			if (j == 0) {
+				semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+			} else if (yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
+				semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+
+			} else if (yearTaken != previousYearTaken) {
+				semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+			}
 			previousYearTaken = yearTaken;
-			previousSemesterTaken = semesterTaken;				
+			previousSemesterTaken = semesterTaken;
 		}
 
 		return semestersByYearAndSemester;
 	}
+
 	public int getNumCourseInNthSementer(int semester) {
-		HashMap<String,Integer> semestersByYears = this.getSemestersByYearAndSemester();
+		HashMap<String, Integer> semestersByYears = this.getSemestersByYearAndSemester();
 		int i = 0;
-		int count=0;
-		for(int key:semestersByYears.values()) {
-			if(key == semester) {
-				//System.out.println(this.getKey(semestersByYears, key));
+		int count = 0;
+		for (int key : semestersByYears.values()) {
+			if (key == semester) {
+				// System.out.println(this.getKey(semestersByYears, key));
 				String targetKey = this.getKey(semestersByYears, key);
-					for(i=0;i<coursesTaken.size();i++) {
-						int yearTaken = coursesTaken.get(i).getYearTaken();
-						int semesterTaken = coursesTaken.get(i).getSemesterCourseTaken();
-						String target = String.valueOf(yearTaken)+ "-" +String.valueOf(semesterTaken);
-						if(target.equals(targetKey)) count++;
-					}
+				for (i = 0; i < coursesTaken.size(); i++) {
+					int yearTaken = coursesTaken.get(i).getYearTaken();
+					int semesterTaken = coursesTaken.get(i).getSemesterCourseTaken();
+					String target = String.valueOf(yearTaken) + "-" + String.valueOf(semesterTaken);
+					if (target.equals(targetKey))
+						count++;
+				}
 			}
 		}
 
-	/*	int[] countSemester = new int[253];
-		int position=1;
-	//	System.out.println(this.getCourse().get(9).getSemesterCourseTaken());
-		//System.out.println(this.getCourse().size());
-	for(int i=0;i<this.getCourse().size();) {
-		
-		int currentSemester =1;
-		int previousSemester =1;
-		int temp = 1;
-		while(temp == currentSemester){		
-			(countSemester[position])++;
-			currentSemester = this.getCourse().get(i++).getSemesterCourseTaken();
-	//		System.out.println(currentSemester);
-			temp = previousSemester;
-			previousSemester = currentSemester;	
-			
-		
-			if(i==this.getCourse().size()) break;
-		}
-		position++;
-			
-	}*/
-	
 		return count;
 	}
+
 	public ArrayList<Course> getCourse() {
 		return coursesTaken;
 	}
+
 	public void printCourse() {
 		System.out.print(coursesTaken.get(1).getStudentid());
 	}
-	public String getStudent(){
-		
+
+	public String getStudent() {
+
 		return studentid;
 	}
+
 	public <K, V> K getKey(Map<K, V> map, V value) {
 		for (Map.Entry<K, V> entry : map.entrySet()) {
 			if (value.equals(entry.getValue())) {
