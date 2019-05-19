@@ -28,8 +28,8 @@ public class Student {
 			int yearTaken = coursesTaken.get(j).getYearTaken();
 			
 			int semesterTaken = coursesTaken.get(j).getSemesterCourseTaken();
-			System.out.println(yearTaken);// + semesterTaken);
-			System.out.print(coursesTaken.get(j).getSemesterCourseTaken());
+		//	System.out.println(yearTaken);// + semesterTaken);
+		//	System.out.print(coursesTaken.get(j).getSemesterCourseTaken());
 			if(j==0) {semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);}
 			else if(yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
 					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + previousSemesterTaken, count);
