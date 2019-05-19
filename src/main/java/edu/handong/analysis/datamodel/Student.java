@@ -23,21 +23,41 @@ public class Student {
 		int previousYearTaken = -1;
 		int previousSemesterTaken = -1;
 		int count = 1;
-		int j = 0;
-		for (j = 0; j < this.getCourse().size(); j++) {
-			int yearTaken = coursesTaken.get(j).getYearTaken();
-			int semesterTaken = coursesTaken.get(j).getSemesterCourseTaken();
+		boolean first = true;
+		/*
+		 * for(j = 0; j < this.getCourse().size(); j++) { int yearTaken =
+		 * coursesTaken.get(j).getYearTaken(); int semesterTaken =
+		 * coursesTaken.get(j).getSemesterCourseTaken();
+		 * 
+		 * if (j == 0) { semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-"
+		 * + semesterTaken, count++); } else if (yearTaken == previousYearTaken &&
+		 * semesterTaken != previousSemesterTaken) {
+		 * semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" +
+		 * semesterTaken, count++);
+		 * 
+		 * } else if (yearTaken != previousYearTaken) {
+		 * semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" +
+		 * semesterTaken, count++); } previousYearTaken = yearTaken;
+		 * previousSemesterTaken = semesterTaken; }
+		 */
 
-			if (j == 0) {
-				semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
-			} else if (yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
-				semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+		for (Course courseTaken : coursesTaken) {
+			int yearTaken = courseTaken.getYearTaken();
+			int semesterTaken = courseTaken.getSemesterCourseTaken();
+			if (first) {
+				semestersByYearAndSemester.put(String.valueOf(coursesTaken.get(0).getYearTaken()) + "-"
+						+ coursesTaken.get(0).getSemesterCourseTaken(), count++);
+				first = false;
+			} else {
+				if (yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
+					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
 
-			} else if (yearTaken != previousYearTaken) {
-				semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+				} else if (yearTaken != previousYearTaken) {
+					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+				}
 			}
-			previousYearTaken = yearTaken;
-			previousSemesterTaken = semesterTaken;
+				previousYearTaken = yearTaken;
+				previousSemesterTaken = semesterTaken;
 		}
 
 		return semestersByYearAndSemester;

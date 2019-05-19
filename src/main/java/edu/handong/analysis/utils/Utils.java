@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Utils {
@@ -32,6 +35,19 @@ public class Utils {
 	}
 
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
+		
+		String finalFileName=null;
+		String temp = targetFileName;
+		
+		for(String targetDirectory:targetFileName.split("/")) 
+			finalFileName = targetDirectory;
+		
+		int index = temp.indexOf(finalFileName);
+		String dirName = temp.substring(0, index);
+			
+		File theDir = new File(dirName);
+		if (!theDir.exists()) theDir.mkdirs();
+		
 		String fileName = targetFileName;
 		PrintWriter outputStream = null;
 		try {
@@ -46,6 +62,5 @@ public class Utils {
 			outputStream.println(line);
 		}
 		outputStream.close();
-
 	}
 }
