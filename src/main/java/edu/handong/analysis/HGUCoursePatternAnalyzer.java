@@ -50,11 +50,12 @@ public class HGUCoursePatternAnalyzer {
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
 				
 			// TODO Auto-generated catch block
-		//System.out.print(students.get("1").getSemestersByYearAndSemester().get("2002-1"));
+		//System.out.println(sortedStudents.get("1").getSemestersByYearAndSemester().get("2007-2"));
 
-	//	ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
-
+		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
 		
+		//System.out.println(linesToBeSaved.get(14));
+		System.out.println(sortedStudents.get("1").getNumCourseInNthSementer(1));
 		
 		// Generate result lines to be saved.
 	
@@ -125,36 +126,18 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		ArrayList<String> linestobesaved = new ArrayList<String>(); // to return;
-		int previous =1;
-		String previousStudentid=null;
-		int position=0;
-		int[] countNumOfSemesterRegistered = null;
-		int countLine = 0;
-		int i=0;
-		//System.out.print(sortedStudents.get(String.valueOf(i)).getCourse().size());
-	/*	while(i<100) {
+		for(int i=1;i<253;i++) {
+			ArrayList<Course> lastCourse = sortedStudents.get(String.valueOf(i)).getCourse();
+			String lastElement = String.valueOf(lastCourse.size()-1);
+			int lastYear = lastCourse.get(Integer.parseInt(lastElement)).getYearTaken();
+			int lastSemester = lastCourse.get(Integer.parseInt(lastElement)).getSemesterCourseTaken();
+			String keyForHashTag = String.valueOf(lastYear) + "-" + String.valueOf(lastSemester);
+			String numOfCourseTaken = String.valueOf(sortedStudents.get(String.valueOf(i)).getSemestersByYearAndSemester().get(keyForHashTag));
 			
-			for(int j=0;j<sortedStudents.get(String.valueOf(i)).getCourse().size();j++) {
-				System.out.print(sortedStudents.get(String.valueOf(i)).getCourse().get(j).getCourseCredit());
+			for(int j=1;j<=Integer.parseInt(numOfCourseTaken);j++) {
+				linestobesaved.add(i + "," + numOfCourseTaken + "," + String.valueOf(j));
 			}
-			i++;
-		}*/
-		/*while(countLine<sortedStudents.size()) {
-			for(int i=0;i<sortedStudents.get(String.valueOf(countLine)).getCourse().size();i++,countLine++) {
-				System.out.println(sortedStudents.get(String.valueOf(countLine)).getCourse().get(i).getSemesterCourseTaken());
-			if(sortedStudents.get(String.valueOf(countLine)).getCourse().get(i).getSemesterCourseTaken() != previous) {
-			  if(sortedStudents.get(String.valueOf(countLine)).getCourse().get(i).getStudentid()== previousStudentid)
-				countNumOfSemesterRegistered[position]++;		
-			  else
-				 position++;
-			}
-				previousStudentid = sortedStudents.get(String.valueOf(countLine)).getCourse().get(i).getStudentid();
-				previous = sortedStudents.get(String.valueOf(countLine)).getCourse().get(i).getSemesterCourseTaken();
-			}	
-			
-		}*/
-	//	System.out.print(countNumOfSemesterRegistered[0]);
-		
+		}
 		
 		// TODO: Implement this method
 		

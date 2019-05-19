@@ -26,31 +26,50 @@ public class Student {
 			int j=0;
 		for(j=0;j<this.getCourse().size();j++) {
 			int yearTaken = coursesTaken.get(j).getYearTaken();
-			
 			int semesterTaken = coursesTaken.get(j).getSemesterCourseTaken();
-		//	System.out.println(yearTaken);// + semesterTaken);
-		//	System.out.print(coursesTaken.get(j).getSemesterCourseTaken());
+			
 			if(j==0) {semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);}
 			else if(yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
-					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + previousSemesterTaken, count);
-					count++;
+					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+				
 				}
 			else if(yearTaken != previousYearTaken) {
-					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + previousSemesterTaken, count);
-					count++;
+					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
 				}			
 			previousYearTaken = yearTaken;
 			previousSemesterTaken = semesterTaken;
 			
 				
 		}
-		System.out.print(j);
+
 		return semestersByYearAndSemester;
 	}
 	public int getNumCourseInNthSementer(int semester) {
 		
+		int[] countSemester = new int[253];
+		int position=1;
+		
+		//System.out.println(this.getCourse().size());
+	for(int i=0;i<this.getCourse().size();) {
+		
+		int currentSemester =1;
+		int previousSemester =1;
+		int temp = 1;
+		
+		while(temp == currentSemester){		
+			countSemester[position]++;
+			currentSemester = this.getCourse().get(i++).getSemesterCourseTaken();
+		//	System.out.println(currentSemester);
+			temp = previousSemester;
+			previousSemester = currentSemester;			
+			i++;
+			if(i==this.getCourse().size()) break;
+		}
+		position++;
+			
+	}
 	
-		return 0;
+		return countSemester[semester];
 	}
 	public ArrayList<Course> getCourse() {
 		return coursesTaken;
