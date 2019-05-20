@@ -55,9 +55,9 @@ public class Student {
 			if (key == semester) {
 				// System.out.println(this.getKey(semestersByYears, key));
 				String targetKey = this.getKey(semestersByYears, key);
-				for (i = 0; i < coursesTaken.size(); i++) {
-					int yearTaken = coursesTaken.get(i).getYearTaken();
-					int semesterTaken = coursesTaken.get(i).getSemesterCourseTaken();
+				for (Course courseTaken: coursesTaken) {
+					int yearTaken = courseTaken.getYearTaken();
+					int semesterTaken = courseTaken.getSemesterCourseTaken();
 					String target = String.valueOf(yearTaken) + "-" + String.valueOf(semesterTaken);
 					if (target.equals(targetKey))
 						count++;
