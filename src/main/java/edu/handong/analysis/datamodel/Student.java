@@ -32,6 +32,7 @@ public class Student {
 				semestersByYearAndSemester.put(String.valueOf(coursesTaken.get(0).getYearTaken()) + "-"
 						+ coursesTaken.get(0).getSemesterCourseTaken(), count++);
 				first = false;
+			
 			} else {
 				if (yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
 					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
@@ -42,6 +43,13 @@ public class Student {
 			}
 				previousYearTaken = yearTaken;
 				previousSemesterTaken = semesterTaken;
+			/*if (first) {
+				semestersByYearAndSemester.put(String.valueOf(coursesTaken.get(0).getYearTaken()) + "-"
+						+ coursesTaken.get(0).getSemesterCourseTaken(), count++);
+				first = false;
+			}
+			String HashKey = String.valueOf(courseTaken.getYearTaken()) + "-"+ String.valueOf(courseTaken.getSemesterCourseTaken());
+			semestersByYearAndSemester.put(HashKey,count++);*/
 		}
 
 		return semestersByYearAndSemester;
@@ -49,7 +57,6 @@ public class Student {
 
 	public int getNumCourseInNthSementer(int semester) {
 		HashMap<String, Integer> semestersByYears = this.getSemestersByYearAndSemester();
-		int i = 0;
 		int count = 0;
 		for (int key : semestersByYears.values()) {
 			if (key == semester) {
@@ -80,6 +87,7 @@ public class Student {
 
 		return studentid;
 	}
+	
 
 	public <K, V> K getKey(Map<K, V> map, V value) {
 		for (Map.Entry<K, V> entry : map.entrySet()) {

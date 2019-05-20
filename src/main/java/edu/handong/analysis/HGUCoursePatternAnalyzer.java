@@ -82,7 +82,7 @@ public class HGUCoursePatternAnalyzer {
 
 		HashMap<String, Student> loadedStudent = new HashMap<String, Student>();
 		int i = 1;
-		while (i <= 253) {
+		while (i <= positionForStudent) {
 			loadedStudent.put(String.valueOf(i), loadedStudentInstance[i]);
 			i++;
 		}
@@ -111,7 +111,7 @@ public class HGUCoursePatternAnalyzer {
 		int lastYear;
 		int lastSemester;
 
-		for (int i = 1; i <= 253; i++) {
+		for (int i = 1; i <= sortedStudents.size(); i++) {
 			Student lastStudent = sortedStudents.get(String.valueOf(i));
 			ArrayList<Course> lastCourse = lastStudent.getCourse();
 			String lastElement = String.valueOf(lastCourse.size() - 1);
