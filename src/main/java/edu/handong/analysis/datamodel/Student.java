@@ -7,7 +7,7 @@ import java.util.Map;
 public class Student {
 	private String studentid;
 	private ArrayList<Course> coursesTaken = new ArrayList<Course>();
-	private HashMap<String, Integer> semestersByYearAndSemester;
+	private HashMap<String, Integer> semestersByYearAndSemester = new HashMap<String, Integer>();
 
 	public Student(String studentId) {
 		this.studentid = studentId;
@@ -19,39 +19,29 @@ public class Student {
 	}
 
 	public HashMap<String, Integer> getSemestersByYearAndSemester() {
-		semestersByYearAndSemester = new HashMap<String, Integer>();
-		int previousYearTaken = -1;
-		int previousSemesterTaken = -1;
-		int count = 1;
+	//	semestersByYearAndSemester = new HashMap<String, Integer>();
+			int count = 1;
 		boolean first = true;
 	
 		for (Course courseTaken : coursesTaken) {
 			int yearTaken = courseTaken.getYearTaken();
 			int semesterTaken = courseTaken.getSemesterCourseTaken();
-			if (first) {
-				semestersByYearAndSemester.put(String.valueOf(coursesTaken.get(0).getYearTaken()) + "-"
-						+ coursesTaken.get(0).getSemesterCourseTaken(), count++);
+			String HashKey = String.valueOf(yearTaken) + "-" + semesterTaken;
+			if (semestersByYearAndSemester.isEmpty() && first) {
+				semestersByYearAndSemester.put(HashKey, count++);
 				first = false;
 			
 			} else {
-				if (yearTaken == previousYearTaken && semesterTaken != previousSemesterTaken) {
-					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
+				if(!semestersByYearAndSemester.containsKey(HashKey)) semestersByYearAndSemester.put(HashKey,count++);
 
-				} else if (yearTaken != previousYearTaken) {
-					semestersByYearAndSemester.put(String.valueOf(yearTaken) + "-" + semesterTaken, count++);
-				}
+
 			}
-				previousYearTaken = yearTaken;
-				previousSemesterTaken = semesterTaken;
-			/*if (first) {
-				semestersByYearAndSemester.put(String.valueOf(coursesTaken.get(0).getYearTaken()) + "-"
-						+ coursesTaken.get(0).getSemesterCourseTaken(), count++);
-				first = false;
-			}
-			String HashKey = String.valueOf(courseTaken.getYearTaken()) + "-"+ String.valueOf(courseTaken.getSemesterCourseTaken());
-			semestersByYearAndSemester.put(HashKey,count++);*/
+			
+				//previousYearTaken = yearTaken;
+			//	previousSemesterTaken = semesterTaken;
+		
 		}
-
+		
 		return semestersByYearAndSemester;
 	}
 
