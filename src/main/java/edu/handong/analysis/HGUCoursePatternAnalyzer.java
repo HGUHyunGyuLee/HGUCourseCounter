@@ -144,11 +144,8 @@ public class HGUCoursePatternAnalyzer {
 	private Options createOptions() {
 		Options options = new Options();
 
-		// add options by using OptionBuilder
+		// add options by using OptionBuilder 
 
-		// add options by using OptionBuilder
-
-		// add options by using OptionBuilder
 		options.addOption(Option.builder("h").longOpt("help").desc("Help").build());
 		options.addOption(Option.builder("i").longOpt("input").desc("Set an input file path").hasArg()
 				.argName("Input path").required().build());
