@@ -17,7 +17,7 @@ import org.apache.commons.csv.CSVRecord;
 
 public class Utils {
 
-	public static ArrayList<String> getLines(String file, boolean removeHeader) throws IOException {
+	/*public static ArrayList<String> getLines(String file, boolean removeHeader) throws IOException {
 		ArrayList<String> getLines = new ArrayList<String>();
 		
 		 try (
@@ -55,9 +55,9 @@ public class Utils {
 		} catch (IOException e) {
 			System.out.println("The file path does not exist. Please check your CLI argument!");
 			System.exit(0);
-		}*/
+		}
 		return getLines;
-	}
+	}*/
 
 	public static void writeAFile(ArrayList<String> lines, String targetFileName, boolean option1) {
 		
