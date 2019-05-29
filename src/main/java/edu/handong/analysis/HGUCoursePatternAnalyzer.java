@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Collections;
 
+import java.io.File;
+
+import java.lang.Iterable;
+import org.apache.commons.cli.Options;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -17,7 +22,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
-//import edu.handong.analysis.utils.NotEnoughArgumentException;
+import edu.handong.analysis.utils.NotEnoughArgumentException;
 import edu.handong.analysis.utils.Utils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -39,6 +44,7 @@ public class HGUCoursePatternAnalyzer {
 	String input;
 	String output;
 	boolean analysis;
+	boolean coursecodeExist;
 	String coursecode;
 	String startyear;
 	String endyear;
@@ -100,13 +106,18 @@ public class HGUCoursePatternAnalyzer {
 				if (optionAnalysis.equals("1")) {
 					Utils.writeAFile(linesToBeSaved, resultPath, true);
 				} else if (optionAnalysis.equals("2")) {
-					// Map<Integer, String> yearsWithInfo = fildYearWithRate(sortedStudents,
-					// coursecode);
-					ArrayList<String> str = countTheRateOfTakingTheCourse(sortedStudents);
-					/*
-					 * for(String s: str) { System.out.println(s); }
-					 */
-					Utils.writeAFile(str, resultPath, false);
+						if(coursecodeExist) {
+					
+							ArrayList<String> str = countTheRateOfTakingTheCourse(sortedStudents);
+							Utils.writeAFile(str, resultPath, false);
+						}
+						else {
+							printHelp(options);
+							return;
+						}
+					
+			//		  for(String s: str) { System.out.println(s); }
+					 		
 				}
 
 				return;
@@ -131,6 +142,7 @@ public class HGUCoursePatternAnalyzer {
 			startyear = cmd.getOptionValue("s");
 			endyear = cmd.getOptionValue("e");
 			analysis = cmd.hasOption("a");
+			coursecodeExist = cmd.hasOption("c");
 
 		} catch (Exception e) {
 			printHelp(options);
@@ -247,8 +259,8 @@ public class HGUCoursePatternAnalyzer {
 		for (String key : sortedStudent.keySet()) {
 			int courseSize = sortedStudent.get(key).getCourse().size();
 
-			for (int i = 0; i < courseSize; i++) {
-				yearInCourse = sortedStudent.get(key).getCourse().get(i).getYearTaken();
+			for (Course course : sortedStudent.get(key).getCourse()){
+				yearInCourse = course.getYearTaken();
 				if (!yearsToBeSaved.contains(yearInCourse))
 					yearsToBeSaved.add(yearInCourse);
 			}
@@ -257,7 +269,7 @@ public class HGUCoursePatternAnalyzer {
 		Collections.sort(yearsToBeSaved);
 		// System.out.println(yearsToBeSaved.size());
 		// int j=-1;
-		boolean first = true;
+		//boolean first = true;
 		for (int j = 0; j < yearsToBeSaved.size(); j++) {
 			for (int k = 1; k <= 4; k++) {
 				for (String key : sortedStudent.keySet()) {
@@ -278,9 +290,9 @@ public class HGUCoursePatternAnalyzer {
 				}
 				if (j < yearsToBeSaved.size()) {
 					students.put(yearsToBeSaved.get(j) + "-" + k, countForTotalStudnets);
-					// System.out.println(yearsToBeSaved.get(j)+"-"+k +":" + countForTotalStudnets +
-					// " " + countForStudents);
-					total = total + countForStudents;
+				//	 System.out.println(yearsToBeSaved.get(j)+"-"+k +":" + countForTotalStudnets +
+				//	 " " );
+					total = total + countForTotalStudnets;
 					countForTotalStudnets = 0;
 					countForStudents = 0;
 				}
@@ -316,7 +328,7 @@ public class HGUCoursePatternAnalyzer {
 		
 		// int j=-1;
 	
-		for (Integer yearToBeSaved: yearsToBeSaved) {//int year = 0; year < yearsToBeSaved.size(); year++) {
+		for (int year = 0; year < yearsToBeSaved.size(); year++) {
 			for (int sem = 1; sem <= 4; sem++) {
 				for (String key : sortedStudent.keySet()) {
 					// countForTotalStudnets=0;
@@ -325,7 +337,7 @@ public class HGUCoursePatternAnalyzer {
 						int yearToCompare = courseInStudent.getYearTaken();
 						int semesterToCompare = courseInStudent.getSemesterCourseTaken();
 						String courseCodeToCompare = courseInStudent.getCourseCode();
-						if (yearToBeSaved ==yearToCompare && sem == semesterToCompare
+						if (yearsToBeSaved.get(year) ==yearToCompare && sem == semesterToCompare
 								&& courseCodeToCompare.equals(coursecode)) {
 							countForStudents++;
 							// break;
@@ -334,16 +346,16 @@ public class HGUCoursePatternAnalyzer {
 
 					// first=false;
 				}
-				if (sem < yearsToBeSaved.size()) {
-					students.put(yearToBeSaved + "-" + sem, countForStudents);
-					// System.out.println(yearsToBeSaved.get(j)+"-"+k +":" + countForStudents);
+				if (year< yearsToBeSaved.size()) {
+					students.put(yearsToBeSaved.get(year) + "-" + sem, countForStudents);
+				//	System.out.println(yearsToBeSaved.get(year)+"-"+sem+":" + countForStudents);
 					total = total + countForStudents;
 					countForStudents = 0;
 				}
 			}
 
 		}
-		// System.out.println(total);
+		 //System.out.println(total);
 		return students;
 	}
 
@@ -402,7 +414,7 @@ public class HGUCoursePatternAnalyzer {
 			String year = key.split("-")[0];
 			String semester = key.split("-")[1];
 			if (totalStudent.get(key) != 0) {
-				rate = (Double.valueOf(studentTaken.get(key)) / Double.valueOf(totalStudent.get(key))) * 100;
+				rate = (Double.valueOf(studentTaken.get(key))/Double.valueOf(totalStudent.get(key))) * 100;
 				rateString = String.format("%.1f", rate);
 			} else {
 				rateString = "0.0";
